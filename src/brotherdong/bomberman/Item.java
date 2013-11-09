@@ -12,12 +12,21 @@ import static brotherdong.bomberman.Global.*;
  */
 public class Item extends GameObject {
 
+
 	//Server fields
 	private Type type;
 
 	//Client fields
 	private Type t;
-	private double height = 0;
+	private int height = 0;
+	private static int[] sines;
+
+	static {
+		sines = new int[30];
+		for (int i = 0; i < sines.length; i++) {
+			sines[i] = (int) Math.round(Math.sin(Math.toRadians(i*12)) * 4);
+		}
+	}
 
 	//Server constructor
 	public Item(int x, int y) {
@@ -60,7 +69,7 @@ public class Item extends GameObject {
 	@Override
 	public void step() {
 	}
-	
+
 	@Override
 	public void handleCollisions() {
 	}
@@ -87,12 +96,12 @@ public class Item extends GameObject {
 
 	@Override
 	public void clientStep() {
-		height += .1;
+		height = (height+1) % 30;
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(t.getImage(), x + 2, y - 2 + (int) Math.round(Math.sin(height) * 4), null);
+		g.drawImage(t.getImage(), x + 2, y - 2 + sines[height], null);
 	}
 }
 
